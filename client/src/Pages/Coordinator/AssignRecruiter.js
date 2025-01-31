@@ -9,7 +9,7 @@ export const AssignRecruiter = () => {
     const [job, setJob] = useState();
     const [recruiters, setRecruiters] = useState([]);
     const [selectedRecruiter, setSelectedRecruiter] = useState();
-
+    const [redirect, setRedirect] = useState(false);
     const placeholderQuestions = [
         "Willing to relocate?",
         "Sufficient experience?",
@@ -20,11 +20,16 @@ export const AssignRecruiter = () => {
 
     useEffect(() => {
         try {
-            fetch(`http://localhost:8080/jobs/current-job/${id}`).then((res) => res.json()).then((data) => setJob(data))
-            fetch(`http://localhost:8080/users/all-users`).then((res) => res.json()).then((data) => {
-                let recruiterData = data.filter((user) => user.isAssigned === false && user.role === "recruiter");
-                setRecruiters(recruiterData);
-            })
+            fetch(`http://localhost:8000/jobs/current-job/${id}`).then((res) => res.json()).then((data) => setJob(data))
+            fetch(`http://localhost:8000/users/all-users`)
+                .then((res) => res.json())
+                .then((data) => {
+                    console.log("Fetched users data:", data);  // Log the fetched data
+                    // Filter users by role only (assuming `role` is defined as "recruiter")
+                    let recruiterData = data.filter((user) => user.role === "recruiter");
+                    console.log("Filtered recruiter data:", recruiterData);  // Log the filtered recruiter data
+                    setRecruiters(recruiterData);
+                })
         } catch (error) {
             console.log(error);
         }
@@ -38,43 +43,50 @@ export const AssignRecruiter = () => {
         defaultValues: {
             jobID: "",
             recruiterID: "",
-            feedbackForm:[""]
+            feedbackForm: [""]
         }
     })
-
+ useEffect(() => {
+        if (redirect) {
+            setTimeout(() => {
+                window.location.href = "/";
+            }, 2000);
+        }
+    }, [redirect]);
     const onSubmit = (data) => {
         console.log("Form submitted");
-        const newData = {...data, jobID:id};
-        console.log(newData);
-        fetch("http://localhost:8080/recruiter/post-recruiter", {
+        const newData = { ...data, jobID: id };
+        console.log(newData, "uuuuuu");
+        fetch("http://localhost:8000/recruiter/post-recruiter", {
             method: "POST",
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify(newData)
         })
-        .then((res) => res.json())
-        .then((result) => {
-            console.log(result);
-        })
+            .then((res) => res.json())
+            .then((result) => {
+                console.log(result);
+            })
 
-        console.log(data.recruiterID);
+        console.log(data.recruiterID, "ppppp");
 
-        fetch(`http://localhost:8080/users/user/${data.recruiterID}`).then((res) => res.json()).then((data) => {
+        fetch(`http://localhost:8000/users/user/${data.recruiterID}`).then((res) => res.json()).then((data) => {
             let recruiterData = data
             setSelectedRecruiter(recruiterData);
             // console.log(data);
         })
-        
-        fetch(`http://localhost:8080/users/update-user/${data.recruiterID}`, {
+
+        fetch(`http://localhost:8000/users/update-user/${data.recruiterID}`, {
             method: "PUT",
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify({
-                ...selectedRecruiter, isAssigned:true
+                ...selectedRecruiter, isAssigned: true
             })
         })
-        .then((res) => res.json())
-        .then((result) => {
-            console.log(result);
-        })
+            .then((res) => res.json())
+            .then((result) => {
+                setRedirect(true); 
+                console.log(result);
+            })
     }
 
     // DYNAMIC CANDIDATE FORM QUESTION
@@ -117,7 +129,7 @@ export const AssignRecruiter = () => {
                                 <div className='my-4 gap-2 grid grid-cols-2 mx-0 md:mx-8 lg:mx-0'>
 
                                     <div className='bg-green-300 rounded-lg py-4 md:py-5 text-center'>
-                                        <h2 className='text-xs md:text-md font-semibold text-gray-700'>Job Role</h2><p className='text-sm md:text-lg font-bold'>{job.jobTitle }</p>
+                                        <h2 className='text-xs md:text-md font-semibold text-gray-700'>Job Role</h2><p className='text-sm md:text-lg font-bold'>{job.jobTitle}</p>
                                     </div>
                                     <div className='bg-blue-300 rounded-lg py-4 md:py-5 text-center'>
                                         <h2 className='text-xs md:text-md font-semibold text-gray-700'>Job Type</h2><p className='text-sm md:text-lg font-bold'>{job.employmentType}</p>
@@ -142,7 +154,7 @@ export const AssignRecruiter = () => {
                                         <label className='block mt-2 m-1 text-sm font-bold '>Assign Recruiter</label>
                                         <select {...register(`recruiterID`)} className='create-job-input'>
                                             {recruiters.map((recruiter, index) => (
-                                                <option key={index}  value={recruiter._id}>{recruiter.userName}</option>
+                                                <option key={index} value={recruiter._id}>{recruiter.userName}</option>
                                             ))}
                                         </select>
                                     </div>

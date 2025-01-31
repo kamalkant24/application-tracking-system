@@ -34,7 +34,7 @@ export const JobDetails = () => {
     const [file, setFile] = useState();
 
     const [loginData, setLoginData] = useState();
-    
+
     useEffect(() => {
         let token = localStorage.getItem("user");
         const user = JSON.parse(token);
@@ -43,7 +43,7 @@ export const JobDetails = () => {
     }, [])
 
     useEffect(() => {
-        fetch(`http://localhost:8080/jobs/current-job/${id}`).then(res => res.json()).then(
+        fetch(`http://localhost:8000/jobs/current-job/${id}`).then(res => res.json()).then(
             data => { setJob(data); console.log(data); }
         )
     }
@@ -53,7 +53,7 @@ export const JobDetails = () => {
         if (job && job.applicants && job.applicants.length > 0) {
             const fetchApplicantsData = async () => {
                 try {
-                    const response = await fetch(`http://localhost:8080/users/all-users`);
+                    const response = await fetch(`http://localhost:8000/users/all-users`);
                     if (!response.ok) {
                         throw new Error('Failed to fetch applicants data');
                     }
@@ -80,7 +80,7 @@ export const JobDetails = () => {
         setFile(file.name);
         const formData = new FormData();
         formData.append("resume", file);
-        fetch(`http://localhost:8080/upload/resume/${applicants._id}`, {
+        fetch(`http://localhost:8000/upload/resume/${applicants._id}`, {
             method: "POST",
             body: formData,
         })
@@ -92,7 +92,7 @@ export const JobDetails = () => {
 
     const onSubmit = (data) => {
         console.log(data);
-        // fetch(`http://localhost:8080/upload/resume/${applicants._id}`, {
+        // fetch(`http://localhost:8000/upload/resume/${applicants._id}`, {
         //     method: "POST",
         //     headers: { "content-type": "application/json" },
         //     body: JSON.stringify(data),
@@ -121,7 +121,8 @@ export const JobDetails = () => {
                                 <div className='mx-4 my-3 text-center md:text-left md:my-0'>
                                     <h1 className='text-xl md:text-2xl font-bold'>{job.jobTitle}</h1>
                                     <p className='text-secondary'>Humgrow.com</p>
-                                    <p className='text-sm text-gray-700'>Posted - 19/06/2024</p>
+                                    <p className='text-sm text-gray-700'>Posted - {new Date(job.createdDate).toISOString().split('T')[0]}</p>
+
                                 </div>
                             </div>
 
@@ -161,27 +162,24 @@ export const JobDetails = () => {
                             <label class="sr-only">Choose file</label>
                             <input type="file" onChange={handleFileUpload} {...register("resume")} id="file-input" class="block w-full cursor-pointer border border-primary shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none file:bg-primary file:text-white file:border-0 file:me-4 file:py-2 file:px-3" />
                         </div>
-
                         {
                             job && applicants &&
-                                job.applicants.some(jobApplicant => {
-                                    applicants.some(app => {
-
-                                        return jobApplicant.applicant === app._id
-                                    })
-                                }) ?
+                                job.applicants &&
+                                job.applicants.some(jobApplicant =>
+                                    applicants.some(app => jobApplicant.applicant === app._id)
+                                ) ? (
                                 <Link to={`/application-form/${job._id}`}>
                                     <div className='flex justify-center'>
                                         <button className='block bg-primary text-white text-md py-2 px-12 md:px-16 rounded-md'>Apply Now</button>
                                     </div>
                                 </Link>
-                                :
-                                // <Link to={`/application-form/${job._id}`}>
-                                <div className='flex justify-center'>
-                                    <button className='block bg-primary text-white text-md py-2 px-12 md:px-16 rounded-md'>Apply Now</button>
-                                </div>
-                            // </Link>
-                            // <p>You already applied here</p>
+                            ) : (
+                                <Link to={`/application-form/${job && job._id}`}>
+                                    <div className='flex justify-center'>
+                                        <button className='block bg-primary text-white text-md py-2 px-12 md:px-16 rounded-md'>Apply Now</button>
+                                    </div>
+                                </Link>
+                            )
                         }
                     </div>
                 </form>
@@ -195,7 +193,7 @@ export const JobDetails = () => {
                     <p className='hover:underline text-xs md:text-sm mt-8'>By applying to above job, you agree to our terms and conditions.</p>
                 </div>
             </div>
-            
+
             <SimilarJobs />
         </div>
     )
