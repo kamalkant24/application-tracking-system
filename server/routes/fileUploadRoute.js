@@ -40,10 +40,10 @@
 import express from 'express';
 import multer from 'multer';
 import fs from 'fs';
-import path from 'path';
+
 
 const router = express.Router();
-
+// // router.get('/all-users', getUsers); 
 // Ensure the directory exists before saving the file
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {

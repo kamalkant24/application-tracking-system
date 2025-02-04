@@ -6,22 +6,25 @@ const ApplicationSchema = new mongoose.Schema({
         required: true,
         ref: 'Job'
     },
-    candidateID:{
+    candidateID: {
         type: String,
         required: true,
         ref: 'User'
     },
-    applicationStatus:{
+    username: { // New field for storing username
+        type: String
+    },
+    applicationStatus: {
         type: String,
         required: true,
     },
-    applicationForm:[{ 
-        question: { type: String}, 
-        answer: { type: String} 
+    applicationForm: [{ 
+        question: { type: String }, 
+        answer: { type: String } 
     }],
-    candidateFeedback:[{ 
-        question: { type: String}, 
-        answer: { type: String} 
+    candidateFeedback: [{ 
+        question: { type: String }, 
+        answer: { type: String } 
     }],
 });
 

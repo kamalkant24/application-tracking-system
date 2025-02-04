@@ -26,11 +26,11 @@ const JobSchema = new mongoose.Schema({
         required: true
     },
     applicationForm:{ 
-        question: [{ type: String}], 
-        answer: [{ type: String}] 
+        question: [{ type: String }], 
+        answer: [{ type: String }] 
     },
     applicants: [{
-        applicant : {
+        applicant: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
             required: true
@@ -40,7 +40,11 @@ const JobSchema = new mongoose.Schema({
             enum: ['active', 'inactive', 'shortlist', 'rejected'],
             default: 'active'
         }
-    }]
+    }],
+    createdDate: {
+        type: Date,
+        default: Date.now
+    }
 });
 
 const Job = mongoose.model('Job', JobSchema);
