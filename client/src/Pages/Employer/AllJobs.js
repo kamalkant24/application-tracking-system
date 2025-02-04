@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom';
-// import '../../public/featuredJobs.json'
+import { Link } from 'react-router-dom'; // Ensure Link is imported for navigation
 import { toast } from 'react-toastify'
 
 export const AllJobs = () => {
@@ -10,7 +9,7 @@ export const AllJobs = () => {
     const [jobs, setJobs] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
-    useEffect( ()=>{
+    useEffect(() => {
         try {
             fetch("http://localhost:8000/jobs/all-jobs")
                 .then(res => res.json())
@@ -22,13 +21,12 @@ export const AllJobs = () => {
             console.error("Error fetching jobs:", error);
         }
 
-    }, [jobs] )
+    }, []) // Fetch only on component mount
+
     return (
         <div className='max-w-screen-2xl container mx-auto xl:px-24 px-4'>
-
             <div className='py-1'>
-                <div className='w-full '>
-
+                <div className='w-full'>
                     {/* MAIN TABLE */}
                     <section className="py-1 bg-blueGray-50">
                         <div className="w-full xl:w-8/12 mb-12 xl:mb-0 px-4 mx-auto mt-24">
@@ -38,7 +36,6 @@ export const AllJobs = () => {
                                         <div className="relative w-full px-4 max-w-full flex-grow flex-1 text-center">
                                             <h3 className="font-bold text-base text-blueGray-700">All Posted Jobs</h3>
                                         </div>
-
                                     </div>
                                 </div>
 
@@ -56,18 +53,17 @@ export const AllJobs = () => {
                                         <tbody>
                                             {jobs.map((job, key) => <RenderTableRows key={key} job={job} />)}
                                         </tbody>
-
                                     </table>
                                 </div>
                             </div>
                         </div>
-
                     </section>
                 </div>
             </div>
         </div>
-    )
+    );
 }
+
 function HandlerDeleteJob(id){
     try {
         fetch(`http://localhost:8000/jobs/delete-job/${id}`, {
@@ -85,12 +81,12 @@ function HandlerDeleteJob(id){
 }
 
 
-function RenderTableRows({job}){
-    const tableDataCss = "border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-    return (
+function RenderTableRows({ job }) {
+    const tableDataCss = "border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4";
 
+    return (
         <tr>
-            <th className= {`${tableDataCss} text-left text-blueGray-700 px-3 md:px-6`}>
+            <th className={`${tableDataCss} text-left text-blueGray-700 px-3 md:px-6`}>
                 {job.jobTitle}
             </th>
             <td className={`${tableDataCss} hidden md:table-cell`}>
@@ -100,15 +96,15 @@ function RenderTableRows({job}){
                 {job.salary}
             </td>
             <td className={`flex justify-between ${tableDataCss}`}>
-                <button>
-
-                    <box-icon name='edit'/>
-                </button>
-                <button>
-                    
-                    <box-icon name='trash' onClick={() => HandlerDeleteJob(job._id)} />
+                <Link to={`/update-job/${job._id}`}>
+                    <button>
+                        <box-icon name='edit' />
+                    </button>
+                </Link>
+                <button onClick={() => HandlerDeleteJob(job._id)}>
+                    <box-icon name='trash' />
                 </button>
             </td>
         </tr>
-    )
+    );
 }

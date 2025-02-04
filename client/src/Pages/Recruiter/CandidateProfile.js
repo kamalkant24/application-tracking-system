@@ -156,7 +156,7 @@ export const CandidateProfile = () => {
         }
         // console.log(newData);
 
-        fetch("http://localhost:8080/application/post-application", {
+        fetch("http://localhost:8000/application/post-application", {
             method: "POST",
             headers: { "content-type": "application/json" },
             body: JSON.stringify(newData),

@@ -79,12 +79,12 @@ export const RecruiterDashboard = () => {
     useEffect(() => {
         const fetchRecruiterData = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/recruiter/all-recruiter`);
+                const response = await fetch(`http://localhost:8000/recruiter/all-recruiter`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch recruiter data');
                 }
                 const data = await response.json();
-
+                console.log(data,"jjjj")
                 // Filter the recruiter data based on the provided id
                 const recruiterData = data.find(recruiter => recruiter.recruiterID === id);
                 if (recruiterData) {
@@ -111,7 +111,7 @@ export const RecruiterDashboard = () => {
                     //       const data = await response.json();
                     //       setJobs(data);
 
-                    fetch(`http://localhost:8080/jobs/all-jobs`)
+                    fetch(`http://localhost:8000/jobs/all-jobs`)
                         .then(response => response.json())
                         .then(data => {
                             const filteredJobs = data.filter(job => job._id === recruiter.jobID)
@@ -133,7 +133,7 @@ export const RecruiterDashboard = () => {
         if (jobs && jobs.applicants) {
             const fetchApplicantsData = async () => {
                 try {
-                    const response = await fetch(`http://localhost:8080/users/all-users`);
+                    const response = await fetch(`http://localhost:8000/users/all-users`);
                     if (!response.ok) {
                         throw new Error('Failed to fetch applicants data');
                     }

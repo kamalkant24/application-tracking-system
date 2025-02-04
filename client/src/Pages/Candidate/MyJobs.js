@@ -119,11 +119,11 @@ export const MyJobs = () => {
 
     const tableHeaderCss = "px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left";
 
-    const [applications, setApplications] = useState([]); // To store applications from API
-    const [loginData, setLoginData] = useState(null); // To store login data
+    const [applications, setApplications] = useState([]);
+    const [jobs, setJobs] = useState([]);
+    const [loginData, setLoginData] = useState(null);
 
     useEffect(() => {
-        // Fetch login data from localStorage
         const token = localStorage.getItem("user");
         if (token) {
             const user = JSON.parse(token);
@@ -132,7 +132,6 @@ export const MyJobs = () => {
     }, []);
 
     useEffect(() => {
-        // Fetch applications from the API
         const fetchApplications = async () => {
             try {
                 const response = await fetch("http://localhost:8000/application/all-application");
@@ -140,7 +139,7 @@ export const MyJobs = () => {
                     throw new Error(`Error: ${response.status}`);
                 }
                 const data = await response.json();
-                setApplications(data); // Update state with fetched applications
+                setApplications(data);
             } catch (error) {
                 console.error("Failed to fetch applications:", error);
             }
@@ -149,13 +148,27 @@ export const MyJobs = () => {
         fetchApplications();
     }, []);
 
+    useEffect(() => {
+        const fetchJobs = async () => {
+            try {
+                const response = await fetch("http://localhost:8000/jobs/all-jobs");
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.status}`);
+                }
+                const data = await response.json();
+                setJobs(data);
+            } catch (error) {
+                console.error("Failed to fetch jobs:", error);
+            }
+        };
+
+        fetchJobs();
+    }, []);
+
     return (
         <div className='max-w-screen-2xl container mx-auto xl:px-24 px-4'>
-
             <div className='py-1'>
                 <div className='w-full '>
-
-                    {/* MAIN TABLE */}
                     <section className="py-1 bg-blueGray-50">
                         <div className="w-full xl:w-8/12 mb-12 xl:mb-0 px-4 mx-auto mt-24">
                             <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded ">
@@ -164,7 +177,6 @@ export const MyJobs = () => {
                                         <div className="relative w-full px-4 max-w-full flex-grow flex-1 text-center">
                                             <h3 className="font-bold text-base text-blueGray-700">My Applications</h3>
                                         </div>
-
                                     </div>
                                 </div>
 
@@ -178,12 +190,11 @@ export const MyJobs = () => {
                                                 <th className={tableHeaderCss}>Status</th>
                                             </tr>
                                         </thead>
-
                                         <tbody>
                                             {
                                                 applications && applications.length > 0 ? (
                                                     applications.map((application, key) => (
-                                                        <RenderTableRows key={key} application={application} />
+                                                        <RenderTableRows key={key} application={application} jobs={jobs} />
                                                     ))
                                                 ) : (
                                                     <tr>
@@ -192,12 +203,10 @@ export const MyJobs = () => {
                                                 )
                                             }
                                         </tbody>
-
                                     </table>
                                 </div>
                             </div>
                         </div>
-
                     </section>
                 </div>
             </div>
@@ -205,20 +214,20 @@ export const MyJobs = () => {
     );
 };
 
-function RenderTableRows({ application }) {
-
+function RenderTableRows({ application, jobs }) {
     const tableDataCss = "border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4";
+    const jobDetails = jobs.find(job => job.id === application.jobId) || {};
 
     return (
         <tr>
             <th className={`${tableDataCss} text-left text-blueGray-700 px-3 md:px-6`}>
-                {application.jobTitle}
+                {jobDetails.jobTitle || application.jobTitle}
             </th>
             <td className={`${tableDataCss} hidden md:table-cell`}>
-                {application.employmentType}
+                {jobDetails.employmentType || application.employmentType}
             </td>
             <td className={`${tableDataCss} hidden md:table-cell`}>
-                {application.location}
+                {jobDetails.location || application.location}
             </td>
             <td className={`${tableDataCss} font-bold hidden md:table-cell`}>
                 {application.applicationStatus || 'Active'}

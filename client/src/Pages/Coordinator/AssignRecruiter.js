@@ -174,7 +174,7 @@ export const AssignRecruiter = () => {
 
 
                             {/* DYNAMIC BLOCK */}
-                            <div className=' justify-items-center ml-4 md:ml-8'>
+                            <div className='justify-items-center ml-4 md:ml-8'>
                                 {questions.map((question, index) => (
 
                                     <div key={index} className=''>
