@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import logoURL from '../../assets/img/logo.jpeg'
+import logoURL from '../../assets/img/logo.svg'
 
 export const FeaturedJobs = () => {
 
@@ -31,7 +31,7 @@ function Card({ job }) {
             <div className='flex items-center gap-3'>
                 <div>
                     {/* company image */}
-                    <img src={logoURL} alt={job.companyName} className='w-12 rounded-full' />
+                    <img src={logoURL} alt={job.companyName} className='w-12' />
                 </div>
                 <div>
                     <div className='flex items-center'>

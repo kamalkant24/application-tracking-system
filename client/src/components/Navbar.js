@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react'
 import { Outlet, NavLink, Link } from 'react-router-dom'
 import { LoginContext } from '../components/ContextProvider/Context.js';
 import 'boxicons';
-import logoURL from '../assets/img/logo.jpeg'
+import logoURL from '../assets/img/logo.svg'
 
 const employerNavItems = [
     { label: 'Home', path: '/' },
@@ -83,15 +83,15 @@ export const Navbar = () => {
 
     return (
 
-        <div className='max-w-screen container mx-auto xl:px-24 px-4'>
+        <div className='max-w-screen container mx-auto xl:px-24 px-4 bg-blue60'>
 
             <nav className='flex justify-between items-center py-6'>
                 {/* BRAND */}
                 <NavLink to='/' className='flex items-center gap-2 text-2xl text-[#087658]'>
-                    <a href="/" class="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse">
-                        <img src={logoURL} className="rounded-full h-12 md:h-16" alt="Flowbite Logo" />
+                    <a href="/" class="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse main-logo">
+                        <img src={logoURL} className="h-[35px]" alt="Flowbite Logo" />
+                    {/* <span className='font-extrabold text-xl md:text-3xl'>JOBS</span> */}
                     </a>
-                    <span className='font-extrabold text-xl md:text-3xl'>humgrow.com</span>
                 </NavLink>
 
                 {/* MAIN MENU - Lg device */}
@@ -99,10 +99,10 @@ export const Navbar = () => {
                     navItems &&
                     <ul className="hidden md:flex gap-12 font-bold">
                         {navItems.map(({ label, path }) => (
-                            <li key={path} className='text-base text-primary'>
+                            <li key={path} className='text-lg text-grey50 font-normal'>
                                 <NavLink
                                     to={path}
-                                    className={({ isActive }) => isActive ? "active " : ""}
+                                    className={({ isActive }) => isActive ? "active font-medium text-primary border-b border-primary" : ""}
                                 >
                                     <span>{label}</span>
                                 </NavLink>
@@ -122,8 +122,8 @@ export const Navbar = () => {
                             </div>
                             :
                             <div className='text-base text-primary font-medium space-x-5 hidden md:block'>
-                                <Link to="/login" className='py-2 px-5 border rounded bg-gray-100'>Login</Link>
-                                <Link to="/signup" className='bg-secondary text-white py-2 px-5 border rounded'>Sign Up</Link>
+                                <Link to="/login" className='text-base font-normal py-2 px-5 border-solid border-dark100 border bg-transparent rounded-lg'>Login</Link>
+                                <Link to="/signup" className='text-base font-normal py-2 px-5 border-solid border-blue50 border rounded-lg bg-blue50 text-white'>Sign Up</Link>
                             </div>
                     }
                 </div>

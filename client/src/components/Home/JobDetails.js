@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import LogoURL from '../../assets/img/logo.jpeg';
+import LogoURL from '../../assets/img/logo.svg';
 import { useForm } from 'react-hook-form';
 import { SimilarJobs } from '../SimilarJobs';
 
@@ -95,7 +95,7 @@ export const JobDetails = () => {
                     {job && (
                         <div className='w-full'>
                             <div className='flex items-center flex-wrap justify-center md:justify-normal'>
-                                <img src={LogoURL} alt="Logo" className="rounded-full w-20 md:w-24 h-auto" />
+                                <img src={LogoURL} alt="Logo" className="w-20 md:w-24 h-auto" />
                                 <div className='mx-4 my-3 text-center md:text-left md:my-0'>
                                     <h1 className='text-xl md:text-2xl font-bold'>{job.jobTitle}</h1>
                                     <p className='text-secondary'>Humgrow.com</p>

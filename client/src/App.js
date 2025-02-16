@@ -31,7 +31,7 @@ function App() {
   
 
   return (
-    <div className="App">
+    <div className="App bg-blue60">
       <Routes>
           {/* <h1 className='text-5xl text-green-600 '>Hello</h1> */}
           <Route path='/' element={<Navbar />}> 
