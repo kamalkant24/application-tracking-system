@@ -1,6 +1,8 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./src/**/*.{html,js}"],
+  content: [
+    "./src/**/*.{js,jsx,ts,tsx}",
+  ],
   theme: {
     extend: {
       colors: {
@@ -15,10 +17,7 @@ module.exports = {
         blue60: "#eff5ff", // rgba(239, 245, 255, 1);
         blue70: "#bed3fb", //background: rgba(190, 211, 251, 1);
         white50: "#ffffffbd", // rgba(255, 255, 255, 0.74);
-        placeholder: "#00000087" // rgba(0, 0, 0, 0.53);
-
-
-
+        placeholder: "#00000087", // rgba(0, 0, 0, 0.53);
       }
     },
   },
