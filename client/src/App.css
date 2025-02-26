@@ -8,7 +8,7 @@
   font-family: 'Helvetica';
   src: url('./assets/fonts/Helvetica.ttf') format('truetype');
 }
-body{
+body, *{
   font-family: "Roboto", serif;
 }
 .helveticaBold{

@@ -84,7 +84,7 @@ export const Navbar = () => {
     return (
 
         <div className='bg-blue60'>
-            <div className='max-w-screen container mx-auto xl:px-24 px-4'>
+            <div className='max-w-[1360px] container mx-auto px-4'>
                 <nav className='flex justify-between items-center py-6'>
                     {/* BRAND */}
                     <NavLink to='/' className='flex items-center gap-2 text-2xl text-[#087658]'>
@@ -121,9 +121,9 @@ export const Navbar = () => {
                                     </div>
                                 </div>
                                 :
-                                <div className='text-base text-primary font-medium space-x-5 hidden md:block'>
-                                    <Link to="/login" className='text-base font-normal py-2 px-5 border-solid border-dark100 border bg-transparent rounded-lg'>Login</Link>
-                                    <Link to="/signup" className='text-base font-normal py-2 px-5 border-solid border-blue50 border rounded-lg bg-blue50 text-white'>Sign Up</Link>
+                                <div className='text-base text-primary font-medium hidden md:block'>
+                                    <Link to="/login" className='text-base font-normal py-2 px-5 rounded-lg'>Login</Link>
+                                    <Link to="/signup" className='text-base font-normal pt-[10px] pb-[11px] leading-[25px] px-6 border-solid border-dark100 border rounded-lg bg-transparent'>Sign Up</Link>
                                 </div>
                         }
                     </div>
